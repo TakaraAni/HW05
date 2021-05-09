@@ -31,56 +31,40 @@ namespace WpfApp1
             int a = 0, i = 0;
 
             /****************************平均值*************************************/
-
-            for (i = 0; i < 10; i++)
+            for (i = 0; i < studen_score.Length ; i++)
             {
                 a = a + studen_score[i];
             }
-
             double get_label1_anser = a;
             get_label1_anser = get_label1_anser / 10;
-
             label1_anser.Content = get_label1_anser;     //Get AnserOne Score
-
             /******************************標準差**************************************/
-
             double get_label2_anser = 0;
-
-            for (i = 0; i < 10; i++)
+            for (i = 0; i < studen_score.Length ; i++)
             {
                 get_label2_anser = get_label2_anser + Math.Pow(studen_score[i] - get_label1_anser, 2);
             }
-
             get_label2_anser = get_label2_anser / 10;
             get_label2_anser = Math.Sqrt(get_label2_anser);
-
             label2_anser.Content = get_label2_anser;    //Get AnserTwo Score
-
             /******************************偏差加分**************************************/
-
             double checknum = 0;
             double anser3 = 0;
-
-            for (i = 0; i < studen_score.Length-1 ; i++)
+            for (i = 0; i < studen_score.Length ; i++)
             {
-                checknum = Math.Pow(studen_score[i] - get_label1_anser, 2);
-                checknum += checknum;
-                checknum /= studen_score.Length-1;
-                checknum = Math.Sqrt(checknum);
-
                 anser3 = studen_score[i];
+
+                checknum = (anser3 - get_label1_anser) / studen_score.Length-1;
+                checknum = Math.Sqrt(checknum);         //Get AnserThree Anser Key,but it's not std score
+                
                 if (checknum < get_label2_anser) 
                 {
-                    anser3 += 2;
-                    MessageBox.Show("同學[" + i + "] 分數低於標準差(" + checknum +")，故分數加二，加分後分數為:" + anser3);
-                }
-                else if(checknum > get_label2_anser)
-                {
-                    MessageBox.Show("同學[" + i + "]分數高於標準差(" + checknum +")，分數為:" + anser3);
+                    MessageBox.Show("同學[" + i + "] 分數高於標準差，分數為:" + anser3 );
                 }
                 else
                 {
-                    MessageBox.Show("同學[" + i + "]分數等於標準差(" + checknum + ")，分數為:" + anser3);
+                    anser3 += 2;
+                    MessageBox.Show("同學[" + i + "]分數低於標準差，加分後分數為:" + anser3);
                 }
             }
         }
